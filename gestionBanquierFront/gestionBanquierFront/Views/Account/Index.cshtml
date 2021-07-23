@@ -1,0 +1,71 @@
+﻿@model IEnumerable<gestionBanquierFront.Models.Account>
+
+@{
+    ViewBag.Title = "Index";
+}
+<head>
+
+
+
+    @Scripts.Render("~/Content/js/datatables-simple-demo.js")
+
+</head>
+
+
+<div id="layoutSidenav_content">
+    <main>
+        <div class="container-fluid px-4">
+
+            <div class="card mb-4">
+                <div class="card-header">
+                    <i class="fas fa-table me-1"></i>
+                    Account List
+                </div>
+                <div class="card-body">
+                    <table id="datatablesSimple">
+                        <thead>
+                            <tr>
+                                <th>@Html.DisplayNameFor(model => model.numCompte)</th>
+                                <th> @Html.DisplayNameFor(model => model.dateCreation)</th>
+                                <th> @Html.DisplayNameFor(model => model.solde)</th>
+                                <th> @Html.DisplayNameFor(model => model.activated)</th>
+                                <th>@Html.DisplayNameFor(model => model.accountIsInRedStated)</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <th>@Html.DisplayNameFor(model => model.numCompte)</th>
+                                <th> @Html.DisplayNameFor(model => model.dateCreation)</th>
+                                <th> @Html.DisplayNameFor(model => model.solde)</th>
+                                <th> @Html.DisplayNameFor(model => model.activated)</th>
+                                <th>Actions</th>
+                            </tr>
+                        </tfoot>
+                        <tbody>
+
+                            @if (Model != null)
+                            {
+                                foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>  @Html.DisplayFor(modelItem => item.numCompte)</td>
+                                        <td> @Html.DisplayFor(modelItem => item.dateCreation)</td>
+                                        <td> @Html.DisplayFor(modelItem => item.solde)</td>
+                                        <td> @Html.DisplayFor(modelItem => item.activated)</td>
+                                        <td>  @Html.DisplayFor(modelItem => item.accountIsInRedStated)</td>
+                                        <td>
+                                            @Html.ActionLink("Edit", "Edit", new { id = item.id }) |
+                                            @Html.ActionLink("Delete", "Delete", new { id = item.id })
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+</div>
