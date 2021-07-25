@@ -144,21 +144,59 @@ namespace gestionBanquierFront.Controllers
         }
 
         // GET: Account/Edit/5
-        public ActionResult Edit(int id)
+        public  ActionResult Edit(int id)
         {
 
-            return View();
+
+            var account = httpClient.GetAsync("account/account/" + id).Result;
+
+            if (account.IsSuccessStatusCode)
+
+            {
+                var result = account.Content.ReadAsStringAsync().Result;
+                var processedObject = JsonConvert.DeserializeObject<Account>(result);
+                return View(processedObject);
+            }
+            else
+            {
+                account.EnsureSuccessStatusCode();
+                return View();
+            }
         }
 
         // POST: Account/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public async Task<ActionResult> Edit(int id, FormCollection collection)
         {
             try
             {
-                // TODO: Add update logic here
+                var account = new EditAccountRequestModel
+                {
 
-                return RedirectToAction("Index");
+                    numCompte = collection["numCompte"],
+                    solde = collection["solde"],
+                 
+                    activated = collection["activated"].Equals("true") ? 1 : 0,
+
+                    maxAmountToBorrow = collection["maxAmountToBorrow"],
+                    accountIsInRedStated = collection["accountIsInRedStated"].Equals("true") ? 1 : 0
+
+                };
+                account.id = id.ToString();
+
+                var response = await httpClient.PostAsJsonAsync("account/updateAccount/" + id, account);
+
+                if (response.IsSuccessStatusCode)
+
+                {
+                    var result = response.Content.ReadAsStringAsync();
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    response.EnsureSuccessStatusCode();
+                    return View();
+                }
             }
             catch
             {
