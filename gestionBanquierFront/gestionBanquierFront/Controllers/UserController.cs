@@ -137,7 +137,7 @@ namespace gestionBanquierFront.Controllers
                     response.EnsureSuccessStatusCode();
                     return View();
                 }
-                return RedirectToAction("Index");
+
             }
             catch (Exception e)
             {
@@ -154,7 +154,7 @@ namespace gestionBanquierFront.Controllers
         {
 
 
-            var user = httpClient.GetAsync("auth/getuser/" + id).Result;
+            var user = httpClient.GetAsync("auth/users/" + id).Result;
 
             if (user.IsSuccessStatusCode)
 
