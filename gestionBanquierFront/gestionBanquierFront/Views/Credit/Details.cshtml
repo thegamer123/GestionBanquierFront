@@ -1,0 +1,62 @@
+﻿@model gestionBanquierFront.Models.Credit
+
+@{
+    ViewBag.Title = "Details";
+}
+<div id="layoutSidenav_content">
+    <main>
+        <h2>Details</h2>
+
+        <div>
+            <h4>Détail de Credit</h4>
+            <hr />
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => model.dureeCredit)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.dureeCredit)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.montant)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.montant)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.tauxInteret)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.tauxInteret)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.typeclt)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.typeclt)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.salaire)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.salaire)
+                </dd>
+
+            </dl>
+        </div>
+        <p>
+            @Html.ActionLink("Edit", "Edit", new { id = Model.id }) |
+            @Html.ActionLink("Back to List", "Index")
+        </p>
+
+    </main>
+</div>

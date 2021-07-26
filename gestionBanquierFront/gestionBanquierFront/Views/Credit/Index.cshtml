@@ -1,0 +1,64 @@
+﻿@model IEnumerable<gestionBanquierFront.Models.Credit>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<div id="layoutSidenav_content">
+    <main>
+        <h2>Gestion des crédits </h2> <br />
+
+
+        <p>
+            @Html.ActionLink("Create New", "Create")
+        </p>
+
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.dureeCredit)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.montant)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.tauxInteret)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.typeclt)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.salaire)
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.dureeCredit)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.montant)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.tauxInteret)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.typeclt)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.salaire)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.id }) |
+                        @Html.ActionLink("Details", "Details", new { id = item.id }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.id })
+                    </td>
+                </tr>
+            }
+
+        </table>
+        </main>
+</div>
