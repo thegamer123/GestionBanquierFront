@@ -1,0 +1,91 @@
+﻿@model IEnumerable<gestionBanquierFront.Models.User>
+
+@{
+    ViewBag.Title = "Index";
+}
+<head>
+
+
+
+    @Scripts.Render("~/Content/js/datatables-simple-demo.js")
+
+</head>
+
+
+<div id="layoutSidenav_content">
+    <main>
+        <div class="container-fluid px-4">
+
+            <div class="card mb-4">
+                <div class="card-header">
+                    <i class="fas fa-table me-1"></i>
+                    List of Users
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive col-md-12" id="divajaxCall">
+                        <form action="" method="post">
+                            <div class="row">
+                                <div style="text-align:center; padding:0 0 0 0">
+                                    <button type="submit" value="ExportToCsv" name="action">
+                                        <i class="fas fa-file-csv"></i> @Html.ActionLink("ExportCSV", "ExportCSV")
+                                    </button>
+                                    <button type="submit" value="ExportToPdf" name="action">
+                                        <i class="far fa-file-pdf"></i> @Html.ActionLink("ExportPDF", "ExportPDF")
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="row" style="text-align:center; padding : 5px 5px 5px 5px"></div>
+                             
+                            
+                            <table id="datatablesSimple">
+                                <thead>
+                                    <tr>
+                                        <th>@Html.DisplayNameFor(model => model.username)</th>
+                                        <th> @Html.DisplayNameFor(model => model.email)</th>
+                                        <th> @Html.DisplayNameFor(model => model.nom)</th>
+                                        <th> @Html.DisplayNameFor(model => model.prenom)</th>
+                                        <th>@Html.DisplayNameFor(model => model.score)</th>
+                                        
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tfoot>
+                                    <tr>
+                                        <th>@Html.DisplayNameFor(model => model.username)</th>
+                                        <th> @Html.DisplayNameFor(model => model.email)</th>
+                                        <th> @Html.DisplayNameFor(model => model.nom)</th>
+                                        <th> @Html.DisplayNameFor(model => model.prenom)</th>
+                                        <th> @Html.DisplayNameFor(model => model.score)</th>
+                                      
+                                        <th>Actions</th>
+                                    </tr>
+                                </tfoot>
+                                <tbody>
+
+                                    @if (Model != null)
+                                    {
+                                        foreach (var item in Model)
+                                        {
+                                    <tr>
+                                        <td>  @Html.DisplayFor(modelItem => item.username)</td>
+                                        <td> @Html.DisplayFor(modelItem => item.email)</td>
+                                        <td> @Html.DisplayFor(modelItem => item.nom)</td>
+                                        <td> @Html.DisplayFor(modelItem => item.prenom)</td>
+                                        <td>  @Html.DisplayFor(modelItem => item.score)</td>
+                                        
+                                        <td>
+                                            @Html.ActionLink("Edit", "Edit", new { id = item.id }) |
+                                            @Html.ActionLink("Delete", "Delete", new { id = item.id }) |
+                                            @Html.ActionLink("Details", "Details", new { id = item.id })
+                                        </td>
+                                    </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                    </div>
+                </div>
+        </div>
+    </main>
+
+</div>

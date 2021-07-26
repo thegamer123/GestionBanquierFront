@@ -143,7 +143,9 @@
     <Compile Include="Models\Account.cs" />
     <Compile Include="Models\AccountCategory.cs" />
     <Compile Include="Models\CreateAccountRequestModel.cs" />
+    <Compile Include="Models\CreateUserModel.cs" />
     <Compile Include="Models\EditAccountRequestModel.cs" />
+    <Compile Include="Models\EditUserModel.cs" />
     <Compile Include="Models\LoginRequestModel.cs" />
     <Compile Include="Models\Role.cs" />
     <Compile Include="Models\User.cs" />

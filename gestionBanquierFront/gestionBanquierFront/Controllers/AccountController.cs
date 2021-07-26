@@ -260,5 +260,27 @@ namespace gestionBanquierFront.Controllers
                 return View();
             }
         }
+
+
+        // GET: Account/Status
+        public ActionResult Status(int id)
+        {
+
+
+            var account = httpClient.GetAsync("account/account/" + id).Result;
+
+            if (account.IsSuccessStatusCode)
+
+            {
+                var result = account.Content.ReadAsStringAsync().Result;
+                var processedObject = JsonConvert.DeserializeObject<Account>(result);
+                return View(processedObject);
+            }
+            else
+            {
+                account.EnsureSuccessStatusCode();
+                return View();
+            }
+        }
     }
 }
