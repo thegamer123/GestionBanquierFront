@@ -75,9 +75,9 @@ namespace gestionBanquierFront.Controllers
             
         }
 
-    
-    // GET: Account/Create
-    public ActionResult Create()
+
+        // GET: Account/Create
+        public ActionResult Create()
         {
             ViewBag.userList = new SelectList(Enumerable.Empty<User>());
             var userList = httpClient.GetAsync("auth/users").Result;
@@ -97,13 +97,13 @@ namespace gestionBanquierFront.Controllers
             }
             return View();
         }
-
         // POST: Account/Create
         [HttpPost]
         public async Task<ActionResult> Create(FormCollection collection)
         {
             try
             {
+                // TODO: Add insert logic here
                 var provider = CultureInfo.InvariantCulture;
                 var user = new CreateUserModel
                 {
@@ -128,6 +128,121 @@ namespace gestionBanquierFront.Controllers
                 if (response.IsSuccessStatusCode)
 
                 {
+                    
+                    var result = response.Content.ReadAsStringAsync();
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    response.EnsureSuccessStatusCode();
+                    return View();
+                }
+                return RedirectToAction("Index");
+            }
+            catch (Exception e)
+            {
+                return View();
+                Console.WriteLine(e.Message);
+                Console.WriteLine(e.StackTrace);
+                return View("Index");
+            }
+        }
+
+
+        // GET: Account/Edit/5
+        public ActionResult Edit(int id)
+        {
+
+
+            var user = httpClient.GetAsync("auth/getuser/" + id).Result;
+
+            if (user.IsSuccessStatusCode)
+
+            {
+                var result = user.Content.ReadAsStringAsync().Result;
+                var processedObject = JsonConvert.DeserializeObject<User>(result);
+                return View(processedObject);
+            }
+            else
+            {
+                user.EnsureSuccessStatusCode();
+                return View();
+            }
+        }
+
+        // POST: Account/Edit/5
+        [HttpPost]
+        public async Task<ActionResult> Edit(int id, FormCollection collection)
+        {
+            try
+            {
+                var user = new EditUserModel
+                {
+
+                    nom = collection["nom"],
+                    prenom = collection["prenom"],
+                    email = collection["email"],
+                    username = collection["username"],
+
+
+                };
+                user.id = id;
+
+                var response = await httpClient.PostAsJsonAsync("auth/updateusers/" + id, user);
+
+                if (response.IsSuccessStatusCode)
+
+                {
+                    var result = response.Content.ReadAsStringAsync();
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    response.EnsureSuccessStatusCode();
+                    return View();
+                }
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+        
+        
+        // GET: Uerr/Details/5
+        public ActionResult Details(int id)
+        {
+
+            var user = httpClient.GetAsync("auth/getuser/" + id).Result;
+
+            if (user.IsSuccessStatusCode)
+
+            {
+                var result = user.Content.ReadAsStringAsync().Result;
+                var processedObject = JsonConvert.DeserializeObject<User>(result);
+                return View(processedObject);
+            }
+            else
+            {
+                user.EnsureSuccessStatusCode();
+                return View();
+            }
+        }
+
+
+
+        // POST: Account/Delete/5
+        public async Task<ActionResult> Delete(int id)
+        {
+            try
+            {
+
+                var response = await httpClient.PostAsync("auth/deleteusers/" + id, null);
+
+                if (response.IsSuccessStatusCode)
+
+                {
                     var result = response.Content.ReadAsStringAsync();
                     return RedirectToAction("Index");
                 }
@@ -138,102 +253,10 @@ namespace gestionBanquierFront.Controllers
                 }
 
 
-
-
-
             }
-            catch (Exception e)
+            catch
             {
-                Console.WriteLine(e.Message);
-                Console.WriteLine(e.StackTrace);
-                return View("Index");
-            }
-        }
-
-        // POST: Account/Edit/5
-        [HttpGet]
-        public ActionResult Edit(int id)
-        {
-            var userListResponse = httpClient.GetAsync("auth/users/{id}"+id).Result;
-
-            if (userListResponse.IsSuccessStatusCode)
-            {
-                var response = userListResponse.Content.ReadAsAsync<User>().Result;
-                return View(response);
-            }
-
-            return View();
-        }
-
-        // GET: Account/Edit/5
-        [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
-        {
-            ViewBag.userList = new SelectList(Enumerable.Empty<User>());
-            var userList = httpClient.GetAsync("auth/users/{id}"+id).Result;
-            if (userList.IsSuccessStatusCode)
-            {
-                var response = userList.Content.ReadAsAsync<List<User>>().Result;
-                var itemsList = new List<SelectListItem>();
-                response.ForEach(x =>
-                {
-                    itemsList.Add(new SelectListItem
-                    {
-                        Text = x.nom + " " + x.prenom,
-                        Value = x.id.ToString()
-                    });
-                });
-                ViewBag.userList = itemsList;
-            }
-
-            return View(userList);
-
-        }
-        // GET: Uerr/Details/5
-        public ActionResult Details(int id)
-        {
-
-            var userListResponse = httpClient.GetAsync("auth/users/"+id).Result;
-
-            if (userListResponse.IsSuccessStatusCode)
-            {
-                var response = userListResponse.Content.ReadAsAsync<List<User>>().Result;
-                return View(response);
-            }
-
-            return View();
-        }
-
-
-
-        // POST: Account/Delete/5
-        [HttpPost]
-        public async Task<ActionResult> Delete(int id, FormCollection collection)
-        {
-            {
-                try
-                {
-
-                    var response = await httpClient.PostAsync("auth/deleteusers/{id}" + id, null);
-
-                    if (response.IsSuccessStatusCode)
-
-                    {
-                        var result = response.Content.ReadAsStringAsync();
-                        return RedirectToAction("Index");
-                    }
-                    else
-                    {
-                        response.EnsureSuccessStatusCode();
-                        return View();
-                    }
-
-
-                }
-                catch
-                {
-                    return View();
-                }
+                return View();
             }
         }
     }

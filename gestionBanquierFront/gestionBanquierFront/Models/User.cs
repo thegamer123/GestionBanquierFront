@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -30,7 +31,8 @@ namespace gestionBanquierFront.Models
         public string email { get; set; }
         public string password { get; set; }
         public int numTel { get; set; }
-        public object dateNaissance { get; set; }
+        [DataType(DataType.Date)]
+        public DateTime dateNaissance { get; set; }
         public double score { get; set; }
         public List<Role> roles { get; set; }
         public List<ListAccount> listAccount { get; set; }
