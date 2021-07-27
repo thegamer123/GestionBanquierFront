@@ -282,5 +282,13 @@ namespace gestionBanquierFront.Controllers
                 return View();
             }
         }
+
+        // GET: Account/Status
+        public ActionResult Logout()
+        {
+
+            return RedirectToAction("Index", "Login");
+
+        }
     }
 }
