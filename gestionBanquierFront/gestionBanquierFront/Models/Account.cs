@@ -27,6 +27,8 @@ namespace gestionBanquierFront.Models
 
        
         public List<ListOfBorrowTime> listOfBorrowTimes { get; set; }
+
+
         public double maxAmountToBorrow { get; set; }
 
         [JsonIgnore]

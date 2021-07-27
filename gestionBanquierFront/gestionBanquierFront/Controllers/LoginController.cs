@@ -129,8 +129,9 @@ namespace gestionBanquierFront.Controllers
 
 
             }
-            catch
+            catch(Exception e)
             {
+                Console.WriteLine(e.Message);
                 return View();
             }
         }

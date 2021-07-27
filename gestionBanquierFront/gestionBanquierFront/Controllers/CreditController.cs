@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
@@ -19,18 +20,15 @@ namespace gestionBanquierFront.Controllers
         public CreditController()
         {
             httpClient = HttpClientAccessor.HttpClient;
-            // httpClient.BaseAddress = new Uri("http://localhost:8082/api/credits/");
-            //httpClient.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-            httpClient.DefaultRequestHeaders.Authorization =
-    new AuthenticationHeaderValue("Bearer",
-    "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJiZWNocGlkZXZAZ21haWwuY29tIiwiaWF0IjoxNjI3MjUzNjg1LCJleHAiOjE2MjczNDAwODV9.AvANLMmFDvd6SkkfJ8f3rtsnjU4_X5p5FCuShr7GMOR7AV4EMF0QgMBhlq9FK3esXS5Bul6S8u7Cm_qSYLicAw");
+
+
         }
-        /*
+
         protected override void Initialize(RequestContext requestContext)
         {
             base.Initialize(requestContext);
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", (string)Session["accessToken"]);
-        }*/
+        }
 
         // GET: Credit
         public ActionResult Index()
@@ -50,7 +48,7 @@ namespace gestionBanquierFront.Controllers
         // GET: Credit/Details/1
         public ActionResult Details(int id)
         {
-                 var creditList = httpClient.GetAsync("credits/"+id).Result;
+            var creditList = httpClient.GetAsync("credits/" + id).Result;
 
             if (creditList.IsSuccessStatusCode)
             {
@@ -74,27 +72,27 @@ namespace gestionBanquierFront.Controllers
 
         // POST: Credit/Create
         [HttpPost]
-        public ActionResult Create(Credit credit)
+        public async Task<ActionResult> Create(Credit credit)
         {
 
             try
             {
-                var response = httpClient.PostAsJsonAsync("credits/new", credit).ContinueWith(task =>
+                var response = await httpClient.PostAsJsonAsync("credits/new", credit);
+
+                if (response.IsSuccessStatusCode)
                 {
-                    if (task.Result.IsSuccessStatusCode)
-                    {
-                        var result = task.Result.Content.ReadAsStringAsync();
-                    }
-                    else
-                    {
-                        task.Result.EnsureSuccessStatusCode();
-                    }
-                });
-                return RedirectToAction("Index");
+                    var result = response.Content.ReadAsStringAsync();
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    response.EnsureSuccessStatusCode();
+                    return View();
+                }
+
             }
             catch
             {
-
                 return View();
             }
         }
@@ -119,19 +117,19 @@ namespace gestionBanquierFront.Controllers
         {
             try
             {
-     
+
                 {
-                   var response = httpClient.PostAsJsonAsync("credits/update", credit);
-                   
+                    var response = httpClient.PostAsJsonAsync("credits/update", credit);
+
                 }
 
-               /* var creditList = httpClient.PostAsync("credits/update", credit).Result;
+                /* var creditList = httpClient.PostAsync("credits/update", credit).Result;
 
-                if (creditList.IsSuccessStatusCode)
-                {
-                    var response = creditList.Content.ReadAsAsync<Credit>().Result;
-                    return View(response);
-                }*/
+                 if (creditList.IsSuccessStatusCode)
+                 {
+                     var response = creditList.Content.ReadAsAsync<Credit>().Result;
+                     return View(response);
+                 }*/
                 // TODO: Add update logic here
 
                 return RedirectToAction("Index");
@@ -154,7 +152,7 @@ namespace gestionBanquierFront.Controllers
             }
             return View();
         }
-                // POST: Credit/Delete/5
+        // POST: Credit/Delete/5
         [HttpPost]
         public ActionResult Delete(int id, FormCollection collection)
         {
